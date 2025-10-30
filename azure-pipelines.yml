@@ -1,7 +1,4 @@
 # Gradle
-# Build your Java project and run tests with Gradle using a Gradle wrapper script.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
 - main
@@ -10,13 +7,65 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+
+
+- task: SonarCloudPrepare@3
+  inputs:
+    SonarQube: 'SonarQube'
+    scannerMode: 'cli'
+    configMode: 'manual'
+    cliProjectKey: '$(Build.Repository.Name)'
+    cliProjectName: '$(Build.Repository.Name)'
+    cliSources: '.'
+    extraProperties: 
+      sonar.projectKey=$(Build.Repository.Name)
+      sonar.projectName=$(Build.Repository.Name)
+      sonar.projectVersion=$(Build.BuildNumber)
+      sonar.sourceEncoding=UTF-8
+      sonar.language=java
+      sonar.java.source=17
+      sonar.java.target=17
+      sonar.java.binaries=**/build/classes
+
 - task: Gradle@3
   inputs:
-    gradleWrapperFile: 'gradlew'  # Path to your Gradle wrapper
-    tasks: 'build'  # Replace with the tasks you want to run
+    gradleWrapperFile: 'gradlew'
+    tasks: 'clean build' 
     options: '-Xmx3072m' 
     publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'  # Updated pattern for test result files
+    testResultsFiles: '**/TEST-*.xml'  
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'  # Replace with your JDK version
+    jdkVersionOption: '1.17'
     jdkArchitectureOption: 'x64'
+
+- task: SonarCloudAnalyze@3
+  displayName: 'Run Code Analysis'
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@3
+  inputs:
+    pollingTimeoutSec: '600'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'application/app/build/libs'
+    Contents: |
+      *jar
+      !*plain.jar
+    TargetFolder: '$(Build.Repository.LocalPath)/deployment/app'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.Repository.LocalPath)/deployment/app'
+    ArtifactName: 'Artifact'
+    publishLocation: 'Container'
