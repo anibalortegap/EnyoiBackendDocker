@@ -21,7 +21,7 @@ steps:
     cliProjectKey: '$(Build.Repository.Name)'
     cliProjectName: '$(Build.Repository.Name)'
     cliSources: '.'
-    extraProperties: 
+    extraProperties: | 
       sonar.projectKey=$(Build.Repository.Name)
       sonar.projectName=$(Build.Repository.Name)
       sonar.projectVersion=$(Build.BuildNumber)
