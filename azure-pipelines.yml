@@ -18,7 +18,7 @@ steps:
     organization: 'enyoi-cohorte-3'
     scannerMode: 'cli'
     configMode: 'manual'
-    cliProjectKey: '$(Build.Repository.Name)'
+    cliProjectKey: 'enyoi-cohorte-3_anibalortegap-enyoibackenddocker'
     cliProjectName: '$(Build.Repository.Name)'
     cliSources: '.'
     extraProperties: | 
