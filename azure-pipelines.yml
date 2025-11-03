@@ -22,7 +22,7 @@ steps:
     cliProjectName: '$(Build.Repository.Name)'
     cliSources: '.'
     extraProperties: | 
-      sonar.projectKey=$(Build.Repository.Name)
+      sonar.projectKey=enyoi-cohorte-3_anibalortegap-enyoibackenddocker
       sonar.projectName=$(Build.Repository.Name)
       sonar.projectVersion=$(Build.BuildNumber)
       sonar.sourceEncoding=UTF-8
