@@ -5,6 +5,9 @@ trigger:
 
 pool:
   name: Build
+  demands:
+  - JAVA_HOME_17_X64
+  - java
 
 steps:
 
