@@ -12,6 +12,7 @@ steps:
 - task: SonarCloudPrepare@3
   inputs:
     SonarQube: 'SonarQube'
+    organization: 'enyoi-cohorte-3'
     scannerMode: 'cli'
     configMode: 'manual'
     cliProjectKey: '$(Build.Repository.Name)'
