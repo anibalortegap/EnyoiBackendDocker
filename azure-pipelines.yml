@@ -51,7 +51,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'application/app/build/libs'
+    SourceFolder: 'build/libs'
     Contents: |
       *jar
       !*plain.jar
