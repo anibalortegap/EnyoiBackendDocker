@@ -50,12 +50,22 @@ steps:
     pollingTimeoutSec: '600'
 
 - task: CopyFiles@2
+  displayName: 'Copy jar'
   inputs:
     SourceFolder: 'build/libs'
     Contents: |
       *jar
       !*plain.jar
     TargetFolder: '$(Build.Repository.LocalPath)/deployment/app'
+
+- task: CopyFiles@2
+  displayName: 'Copy deployments files'
+  inputs:
+    SourceFolder: 'deployment/'
+    Contents: |
+      infrastructure/**
+    TargetFolder: '$(Build.Repository.LocalPath)/deployment'
+
 
 - task: ArchiveFiles@2
   inputs:
