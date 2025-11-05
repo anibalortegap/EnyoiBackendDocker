@@ -82,3 +82,10 @@ steps:
     ArtifactName: 'Artifact'
     publishLocation: 'Container'
 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifact Docker and ECS'
+  inputs:
+    PathtoPublish: '$(Build.Repository.LocalPath)/deployment'
+    ArtifactName: 'Artifact'
+    publishLocation: 'Container'
+
